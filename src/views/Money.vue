@@ -2,14 +2,14 @@
   <div class="money">
     <div class="Wrapper">
       <header>
-        <span>{YearAndMonth}</span>
+        <span>{{Day.YearAndMonth}}</span>
         <span>本月结余</span>
-        <span class="in">{YearAndMonth}</span>
+        <span class="in">{{Day.YearAndMonth}}</span>
       </header>
-      <main>{restMoney}</main>
+      <main>xxx</main>
       <footer>
-        <span>收入:{incomeMoney}</span>
-        <span>支出:{spendingMoney}</span>
+        <span>收入:</span>
+        <span>支出:</span>
       </footer>
     </div>
     <div class="IconWrapper">
@@ -26,18 +26,19 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Icon from "@/components/Icon.vue";
-const x = require("@/assets/icons/Money.svg");
-
-console.log(x);
+import Time from "@/lib/Time.ts";
 
 @Component({
   components: { Icon },
 })
-export default class Money extends Vue {}
+export default class Money extends Vue {
+  Day = Time();
+}
 </script>
 <style lang="scss" scoped>
+@import "~@/Help.scss";
 .Wrapper {
-  background: #1296db;
+  background: $color;
   color: white;
   height: 20%;
   > header {
@@ -45,7 +46,7 @@ export default class Money extends Vue {}
     justify-content: space-between;
     padding: 10px 10px;
     > .in {
-      color: #1296db;
+      color: $color;
     }
   }
   > main {
@@ -70,15 +71,19 @@ export default class Money extends Vue {}
     position: absolute;
     border-radius: 60px;
     > a {
-      color: #1296db;
+      color: $color;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      border: 2px solid #1296db;
+      border: 2px solid $color;
       margin: 10px;
       border-radius: 60px;
       padding: 10px 24px;
+      > .icon {
+        width: 3em;
+        height: 3em;
+      }
       > span {
         margin: 5px 0;
       }

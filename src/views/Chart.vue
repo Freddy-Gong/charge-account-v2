@@ -1,5 +1,17 @@
 <template>
-  <div class="chart">
-    <h1>This is an about page</h1>
+  <div>
+    <ChartHeader />
   </div>
 </template>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import ChartHeader from "./Chart/ChartHeader.vue";
+@Component({
+  components: { ChartHeader },
+})
+export default class Chart extends Vue {}
+</script>
+
+<style scoped lang='scss'>
+</style>
