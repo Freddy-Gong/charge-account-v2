@@ -33,8 +33,10 @@ const TagModel: tagModel = {
     },
     addTag(type: '-' | '+') {
         const name = window.prompt('新标签的名字')
-        if (name) {
+        if (name && !this.TagList.find(tag => tag.name === name)) {
             this.TagList.splice(-2, 0, { id: createID(), name: name, category: type })
+        } else {
+            window.alert('标签名重复')
         }
         this.save()
     }

@@ -1,6 +1,12 @@
 <template>
   <div class="Tags">
-    <div v-for="tag in showTags" :key="tag.id" class="TagWrapper">
+    <div
+      v-for="tag in showTags"
+      :key="tag.id"
+      class="TagWrapper"
+      :class="selectedTagId===tag.id && 'selected'"
+      @click="select(tag.id)"
+    >
       <Icon :name="tag.name" class="sign" />
       <span>{{tag.name}}</span>
       <Icon
@@ -9,8 +15,10 @@
         @click.native="deleteTag(tag.id)"
       />
     </div>
-    <Icon name="添加" class="add" />
-    <span>添加</span>
+    <div class="add">
+      <Icon name="添加" @click.native="addTag" />
+      <span>添加</span>
+    </div>
   </div>
 </template>
 
@@ -25,6 +33,7 @@ import Icon from "@/components/Icon.vue";
 export default class Tag extends Vue {
   @Prop(String) readonly type!: "-" | "+";
   @Prop(Boolean) readonly manger!: boolean;
+  @Prop(Number) readonly selectedTagId: number | undefined;
   get Tags() {
     return TagModul.TagList;
   }
@@ -34,6 +43,13 @@ export default class Tag extends Vue {
   deleteTag(id: number) {
     console.log(id);
     TagModul.deleteTag(id);
+  }
+  select(id: number) {
+    console.log(id);
+    this.$emit("update:selectedTagId", id);
+  }
+  addTag() {
+    TagModul.addTag(this.type);
   }
 }
 </script>
@@ -77,6 +93,22 @@ export default class Tag extends Vue {
     }
     > span {
       padding: 5px 0px;
+    }
+  }
+  > .add {
+    width: 20%;
+    height: 50%;
+    padding: 5px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    > .icon {
+      border-radius: 50px;
+      padding: 10px;
+      height: 3.5em;
+      width: 3.5em;
     }
   }
 }

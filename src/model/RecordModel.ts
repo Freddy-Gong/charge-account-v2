@@ -1,13 +1,5 @@
-type RecordItem = {
-    tagId: number,
-    type: '-' | '+',
-    account: number,
-    note: string,
-    date: string,
-    day: string,
-    month: string,
-    creatAt: string,
-}
+import Time from '@/lib/Time.ts'
+
 
 type recordModel = {
     RecordList: RecordItem[]
@@ -26,6 +18,10 @@ const RecordModel: recordModel = {
         window.localStorage.setItem('record', JSON.stringify(this.RecordList))
     },
     addRecord(Record: RecordItem) {
+        const time = Time()
+        Record.date = time.FullTime
+        Record.day = time.Day
+        Record.month = time.Month
         this.RecordList.push(Record)
         this.saveRecord()
     }

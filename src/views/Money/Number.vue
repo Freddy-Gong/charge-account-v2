@@ -1,9 +1,9 @@
 <template>
   <div>
     <Header :manger.sync="manger" />
-    <Type :type.sync="type" />
-    <Tag :type="type" :manger="manger" />
-    <NumberPad />
+    <Type :type.sync="recordItem.type" />
+    <Tag :type="recordItem.type" :manger="manger" :selectedTagId.sync="recordItem.selectedTagId" />
+    <NumberPad :result.sync="recordItem.result" :note.sync="recordItem.note" @submit="save" />
   </div>
 </template>
 
@@ -13,13 +13,43 @@ import Header from "./Number/Header.vue";
 import Type from "./Number/Type.vue";
 import NumberPad from "./Number/NumberPad.vue";
 import Tag from "./Number/Tag.vue";
-
+import RecordModul from "@/model/RecordModel.ts";
+type RecordItem = {
+  selectedTagId: number;
+  result: number;
+  note: string;
+  type: "-" | "+";
+  date: string;
+  day: string;
+  month: string;
+};
 @Component({
   components: { NumberPad, Type, Header, Tag },
 })
 export default class Number extends Vue {
-  type: "-" | "+" = "-";
   manger: Boolean = false;
+  recordItem: RecordItem = {
+    type: "-",
+    selectedTagId: 0,
+    result: 0,
+    note: "",
+    date: "",
+    day: "",
+    month: "",
+  };
+  save() {
+    console.log(1);
+    RecordModul.addRecord(this.recordItem);
+    this.recordItem = {
+      type: "-",
+      selectedTagId: 0,
+      result: 0,
+      note: "",
+      date: "",
+      day: "",
+      month: "",
+    };
+  }
 }
 </script>
 

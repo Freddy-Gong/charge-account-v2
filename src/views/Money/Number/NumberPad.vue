@@ -2,7 +2,7 @@
   <div class="Wrapper">
     <div class="calculator">
       <div class="note" @click.stop="note">备注</div>
-      <div class="result">{{result}}</div>
+      <div class="result">{{sectionResult}}</div>
       <button class="number-1" @click="input">1</button>
       <button class="number-2" @click="input">2</button>
       <button class="number-3" @click="input">3</button>
@@ -19,7 +19,7 @@
       <button class="number-8" @click="input">8</button>
       <button class="number-9" @click="input">9</button>
       <button class="multiply" @click="input">x</button>
-      <button class="OK">OK</button>
+      <button class="OK" @click="ok">OK</button>
       <button class="number-0" @click="input">0</button>
       <button class="dot" @click="input">.</button>
       <button class="equal" @click="calculate">=</button>
@@ -29,54 +29,66 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import Icon from "@/components/Icon.vue";
 @Component({
   components: { Icon },
 })
 export default class NumberPad extends Vue {
-  result: string = "0";
+  @Prop(Number) readonly result!: number;
+  sectionResult = this.result.toString();
   isOperator: Boolean = false;
   canDot: Boolean = true;
   input(e: MouseEvent) {
     const text = (e.target as HTMLButtonElement).textContent;
     if (text) {
       if ("+-x÷".indexOf(text) >= 0 && this.isOperator === true) {
-        this.result += text;
+        this.sectionResult += text;
         this.isOperator = false;
       } else if (text === "." && this.canDot === true) {
-        this.result += text;
+        this.sectionResult += text;
         this.canDot = false;
-      } else if (this.result === "0" && "0123456789".indexOf(text) >= 0) {
-        this.result = text;
+      } else if (
+        this.sectionResult === "0" &&
+        "0123456789".indexOf(text) >= 0
+      ) {
+        this.sectionResult = text;
         this.isOperator = true;
       } else {
-        this.result += text;
+        this.sectionResult += text;
       }
     }
+    this.$emit("update:result", parseFloat(this.sectionResult));
   }
   clear(e: MouseEvent) {
-    this.result = "0";
+    this.sectionResult = "0";
+    this.$emit("update:result", parseFloat(this.sectionResult));
   }
   note(e: MouseEvent) {
     const name = window.prompt("您的备注是");
+    this.$emit("update:note", name);
   }
   evil = (fn: string) => {
     let Fn = Function; //一个变量指向Function，防止有些前端编译工具报错
     return new Fn("return " + fn)(); //result后面的空格相当重要
   };
   calculate() {
-    let equation = this.result
+    let equation = this.sectionResult
       .replace(new RegExp("x", "g"), "*")
       .replace(new RegExp("÷", "g"), "/");
-    this.result = parseFloat(this.evil(equation).toFixed(9)).toString();
+    this.sectionResult = parseFloat(this.evil(equation).toFixed(9)).toString();
+    this.$emit("update:result", parseFloat(this.sectionResult));
   }
   deleteNumber() {
-    if (this.result.length === 1) {
-      this.result = "0";
+    if (this.sectionResult.length === 1) {
+      this.sectionResult = "0";
     } else {
-      this.result = this.result.slice(0, -1);
+      this.sectionResult = this.sectionResult.slice(0, -1);
     }
+    this.$emit("update:result", parseFloat(this.sectionResult));
+  }
+  ok(){
+    this.$emit('submit')
   }
 }
 </script>
