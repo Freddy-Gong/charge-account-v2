@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Header />
-    <Type />
-    <Tag />
+    <Header :manger.sync="manger" />
+    <Type :type.sync="type" />
+    <Tag :type="type" :manger="manger" />
     <NumberPad />
   </div>
 </template>
@@ -17,7 +17,10 @@ import Tag from "./Number/Tag.vue";
 @Component({
   components: { NumberPad, Type, Header, Tag },
 })
-export default class Number extends Vue {}
+export default class Number extends Vue {
+  type: "-" | "+" = "-";
+  manger: Boolean = false;
+}
 </script>
 
 <style scoped lang='scss'>

@@ -1,16 +1,21 @@
 <template>
   <div class="Tags">
-    <div v-for="tag in Tags" :key="tag.id" class="TagWrapper">
+    <div v-for="tag in showTags" :key="tag.id" class="TagWrapper">
       <Icon :name="tag.name" class="sign" />
       <span>{{tag.name}}</span>
+      <Icon
+        name="删除"
+        :class="'delete' + (manger ? 'Active' : '')"
+        @click.native="deleteTag(tag.id)"
+      />
     </div>
-    <Icon name="删除" class="sign" />
-    <span>删除</span>
+    <Icon name="添加" class="add" />
+    <span>添加</span>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import TagModul from "@/model/TagModel.ts";
 import Icon from "@/components/Icon.vue";
 
@@ -18,7 +23,18 @@ import Icon from "@/components/Icon.vue";
   components: { Icon },
 })
 export default class Tag extends Vue {
-  Tags = TagModul.TagList;
+  @Prop(String) readonly type!: "-" | "+";
+  @Prop(Boolean) readonly manger!: boolean;
+  get Tags() {
+    return TagModul.TagList;
+  }
+  get showTags() {
+    return this.Tags.filter((tag) => tag.category === this.type);
+  }
+  deleteTag(id: number) {
+    console.log(id);
+    TagModul.deleteTag(id);
+  }
 }
 </script>
 

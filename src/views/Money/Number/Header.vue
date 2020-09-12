@@ -2,18 +2,19 @@
   <div class="Wrapper">
     <Icon name="Right" @click.native="back" />
     <span>记一笔</span>
-    <span onclick="{Manager}">管理</span>
+    <span @click="$emit('update:manger',!manger)">管理</span>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import Icon from "@/components/Icon.vue";
 @Component({
   components: { Icon },
 })
 export default class Header extends Vue {
+  @Prop(Boolean) readonly manger!: Boolean;
   back() {
     window.history.back();
   }

@@ -27,7 +27,8 @@ const TagModel: tagModel = {
         window.localStorage.setItem('tags', JSON.stringify(this.TagList))
     },
     deleteTag(id: number) {
-        this.TagList.filter(tag => tag.id === id)
+        console.log(id)
+        this.TagList = this.TagList.filter(tag => tag.id !== id)
         this.save()
     },
     addTag(type: '-' | '+') {

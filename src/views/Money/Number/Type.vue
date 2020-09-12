@@ -8,14 +8,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class Type extends Vue {
-  type: "+" | "-" = "-";
+  @Prop(String) readonly type!: "-" | "+";
   change(type: "-" | "+") {
     if (this.type !== type) {
-      this.type = type;
+      this.$emit("update:type", type);
     }
   }
 }
