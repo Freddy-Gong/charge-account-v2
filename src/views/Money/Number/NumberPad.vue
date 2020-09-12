@@ -7,7 +7,7 @@
       <button class="number-2" @click="input">2</button>
       <button class="number-3" @click="input">3</button>
       <button class="add" @click="input">+</button>
-      <button class="delete">
+      <button class="delete" @click="deleteNumber">
         <Icon name="delete" />
       </button>
       <button class="number-4" @click="input">4</button>
@@ -70,6 +70,13 @@ export default class NumberPad extends Vue {
       .replace(new RegExp("x", "g"), "*")
       .replace(new RegExp("÷", "g"), "/");
     this.result = parseFloat(this.evil(equation).toFixed(9)).toString();
+  }
+  deleteNumber() {
+    if (this.result.length === 1) {
+      this.result = "0";
+    } else {
+      this.result = this.result.slice(0, -1);
+    }
   }
 }
 </script>

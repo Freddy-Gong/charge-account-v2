@@ -1,5 +1,6 @@
 <template>
   <div class="money">
+    <Nav />
     <div class="Wrapper">
       <header>
         <span>{{Day.YearAndMonth}}</span>
@@ -27,9 +28,10 @@
 import { Component, Vue } from "vue-property-decorator";
 import Icon from "@/components/Icon.vue";
 import Time from "@/lib/Time.ts";
+import Nav from "@/components/Nav.vue";
 
 @Component({
-  components: { Icon },
+  components: { Icon, Nav },
 })
 export default class Money extends Vue {
   Day = Time();
