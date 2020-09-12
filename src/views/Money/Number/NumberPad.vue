@@ -87,8 +87,9 @@ export default class NumberPad extends Vue {
     }
     this.$emit("update:result", parseFloat(this.sectionResult));
   }
-  ok(){
-    this.$emit('submit')
+  ok() {
+    this.$emit("submit");
+    this.sectionResult = "0";
   }
 }
 </script>

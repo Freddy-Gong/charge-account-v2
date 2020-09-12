@@ -7,10 +7,10 @@
         <span>本月结余</span>
         <span class="in">{{Day.YearAndMonth}}</span>
       </header>
-      <main>xxx</main>
+      <main>{{Residue}}</main>
       <footer>
-        <span>收入:</span>
-        <span>支出:</span>
+        <span>收入:{{Income}}</span>
+        <span>支出:{{Spending}}</span>
       </footer>
     </div>
     <div class="IconWrapper">
@@ -29,12 +29,16 @@ import { Component, Vue } from "vue-property-decorator";
 import Icon from "@/components/Icon.vue";
 import Time from "@/lib/Time.ts";
 import Nav from "@/components/Nav.vue";
+import RecordModel from "@/model/RecordModel.ts";
 
 @Component({
   components: { Icon, Nav },
 })
 export default class Money extends Vue {
   Day = Time();
+  Spending = RecordModel.CurrentMonthSpending();
+  Income = RecordModel.CurrentMonthIncome();
+  Residue = RecordModel.CurrentMonthResidue();
 }
 </script>
 <style lang="scss" scoped>

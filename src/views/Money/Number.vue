@@ -38,7 +38,7 @@ export default class Number extends Vue {
     month: "",
   };
   save() {
-    console.log(1);
+    console.log(RecordModul.RecordList);
     RecordModul.addRecord(this.recordItem);
     this.recordItem = {
       type: "-",
