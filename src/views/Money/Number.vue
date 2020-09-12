@@ -13,7 +13,7 @@ import Header from "./Number/Header.vue";
 import Type from "./Number/Type.vue";
 import NumberPad from "./Number/NumberPad.vue";
 import Tag from "./Number/Tag.vue";
-import RecordModul from "@/model/RecordModel.ts";
+import { RecordModel } from "@/model/RecordModel.ts";
 type RecordItem = {
   selectedTagId: number;
   result: number;
@@ -38,8 +38,8 @@ export default class Number extends Vue {
     month: "",
   };
   save() {
-    console.log(RecordModul.RecordList);
-    RecordModul.addRecord(this.recordItem);
+    console.log(RecordModel.RecordList);
+    RecordModel.addRecord(this.recordItem);
     this.recordItem = {
       type: "-",
       selectedTagId: 0,

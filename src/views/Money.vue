@@ -21,6 +21,8 @@
         </router-link>
       </div>
     </div>
+    <div class="gap">xxx</div>
+    <Show-record />
   </div>
 </template>
 
@@ -29,10 +31,11 @@ import { Component, Vue } from "vue-property-decorator";
 import Icon from "@/components/Icon.vue";
 import Time from "@/lib/Time.ts";
 import Nav from "@/components/Nav.vue";
-import RecordModel from "@/model/RecordModel.ts";
+import { RecordModel } from "@/model/RecordModel.ts";
+import ShowRecord from "@/views/Money/ShowRecord.vue";
 
 @Component({
-  components: { Icon, Nav },
+  components: { Icon, Nav, ShowRecord },
 })
 export default class Money extends Vue {
   Day = Time();
@@ -66,6 +69,9 @@ export default class Money extends Vue {
     justify-content: space-between;
     padding: 10px 10px;
   }
+}
+.gap {
+  height: 75px;
 }
 .IconWrapper {
   position: relative;
