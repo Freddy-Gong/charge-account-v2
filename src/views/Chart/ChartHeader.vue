@@ -8,7 +8,7 @@
       <span class="line"></span>
       <span :class="MonthOrDay === 'day' && 'active'" @click="$emit('update:MonthOrDay','day')">日</span>
     </div>
-    <div>{{Day.MonthAndDay}}</div>
+    <div>{{time}}</div>
     <select defaultValue="-" class="select" @change="changeType">
       <option value="-">支出</option>
       <option value="+">收入</option>
@@ -18,13 +18,12 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import Time from "@/lib/Time.ts";
 
 @Component
 export default class ChartHeader extends Vue {
   @Prop(String) readonly MonthOrDay!: "day" | "month";
   @Prop(String) readonly IncomeOrSpending!: "-" | "+";
-  Day = Time();
+  @Prop(String) time!: string;
   changeType() {
     if (this.IncomeOrSpending === "-") {
       this.$emit("update:IncomeOrSpending", "+");

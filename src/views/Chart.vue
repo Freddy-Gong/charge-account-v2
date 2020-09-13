@@ -1,8 +1,17 @@
 <template>
   <div>
     <Nav />
-    <ChartHeader :MonthOrDay.sync="MonthOrDay" :IncomeOrSpending.sync="IncomeOrSpending" />
-    <BarChart :MonthOrDay="MonthOrDay" :IncomeOrSpending="IncomeOrSpending" />
+    <ChartHeader
+      :time="data.MonthAndDay"
+      :MonthOrDay.sync="MonthOrDay"
+      :IncomeOrSpending.sync="IncomeOrSpending"
+    />
+    <BarChart
+      :MonthOrDay="MonthOrDay"
+      :IncomeOrSpending="IncomeOrSpending"
+      :time.sync="data.MonthAndDay"
+    />
+    <CircleChart :time="data.MonthAndDay" :IncomeOrSpending="IncomeOrSpending" />
   </div>
 </template>
 
@@ -12,12 +21,14 @@ import ChartHeader from "./Chart/ChartHeader.vue";
 import Nav from "@/components/Nav.vue";
 import BarChart from "./Chart/BarChart.vue";
 import CircleChart from "./Chart/CircleChart.vue";
+import Time from "@/lib/Time.ts";
 @Component({
   components: { ChartHeader, Nav, BarChart, CircleChart },
 })
 export default class Chart extends Vue {
   MonthOrDay: "day" | "month" = "day";
   IncomeOrSpending: "-" | "+" = "-";
+  data = Time();
 }
 </script>
 

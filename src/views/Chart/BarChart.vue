@@ -15,6 +15,7 @@ import { RecordModel } from "@/model/RecordModel.ts";
 export default class BarChart extends Vue {
   @Prop(String) readonly MonthOrDay!: "day" | "month";
   @Prop(String) readonly IncomeOrSpending!: "-" | "+";
+  @Prop(String) time!:string
   data = Time();
   defaultDate = {
     tagId: -1 as number,
@@ -23,7 +24,20 @@ export default class BarChart extends Vue {
     note: "",
   };
   ec = echarts as any;
-  MyEcharts: echarts;
+  MyEcharts: any; //echarts??
+  chart() {
+    if (this.IncomeOrSpending === "-") {
+      this.MyEcharts.setOption(this.option);
+      this.MyEcharts.on("click", (params: any) => {
+        this.$emit("update:time", params.name);
+      });
+    } else {
+      this.MyEcharts.setOption(this.option2);
+      this.MyEcharts.on("click", (params: any) => {
+        this.$emit("update:time", params.name);
+      });
+    }
+  }
   get XArray() {
     const array: string[] = [];
     if (this.MonthOrDay === "day") {
@@ -185,28 +199,16 @@ export default class BarChart extends Vue {
   }
   @Watch("IncomeOrSpending")
   onIncomeOrSpendingChange() {
-    if (this.IncomeOrSpending === "-") {
-      this.MyEcharts.setOption(this.option);
-    } else {
-      this.MyEcharts.setOption(this.option2);
-    }
+    this.chart();
   }
   @Watch("MonthOrDay")
   onMonthOrDay() {
-    if (this.IncomeOrSpending === "-") {
-      this.MyEcharts.setOption(this.option);
-    } else {
-      this.MyEcharts.setOption(this.option2);
-    }
+    this.chart();
   }
   mounted() {
     (this.$refs.container as HTMLDivElement).style.height = "350px";
     this.MyEcharts = this.ec.init(this.$refs.container as HTMLDivElement);
-    if (this.IncomeOrSpending === "-") {
-      this.MyEcharts.setOption(this.option);
-    } else {
-      this.MyEcharts.setOption(this.option2);
-    }
+    this.chart();
   }
 }
 </script>
