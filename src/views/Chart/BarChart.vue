@@ -24,84 +24,114 @@ export default class BarChart extends Vue {
   };
   ec = echarts as any;
   get XArray() {
-    return [] as string[];
-  }
-  startSet = 0;
-  endSet = 0;
-
-  hash: { [key: string]: Partial<RecordItem>[] } = {};
-  Spending: number[] = [];
-  Income: number[] = [];
-  get ChartArrays() {
-    return Object.entries(this.hash);
-  }
-  created() {
+    const array: string[] = [];
     if (this.MonthOrDay === "day") {
       for (let i = 1; i < 31; i++) {
-        this.XArray.push(this.data.MonthNumber + "-" + i);
+        array.push(this.data.MonthNumber + "-" + i);
       }
+    } else if (this.MonthOrDay === "month") {
+      for (let i = 1; i < 13; i++) {
+        array.push(i.toString());
+      }
+    }
+    return array;
+  }
+  get startSet() {
+    let start: number = 0;
+    if (this.MonthOrDay === "day") {
+      if (this.data.DayNumber >= 8) {
+        start = this.endSet - 20;
+      }
+    } else if (this.MonthOrDay === "month") {
+      if (this.data.MonthNumber >= 8) {
+        start = this.endSet - 50;
+      }
+    }
+    return start;
+  }
+  get endSet() {
+    let end: number = 0;
+    if (this.MonthOrDay === "day") {
       if (this.data.DayNumber < 8) {
-        this.startSet = 0;
-        this.endSet = 20;
+        end = 20;
       } else {
-        this.endSet = (this.data.DayNumber / 30) * 100;
-        this.startSet = this.endSet - 20;
+        end = (this.data.DayNumber / 30) * 100;
       }
-      this.XArray.forEach((x) => {
-        if (!(x in this.hash)) {
-          this.hash[x] = [this.defaultDate];
+    } else if (this.MonthOrDay === "month") {
+      if (this.data.MonthNumber < 8) {
+        end = 50;
+      } else {
+        end = (this.data.MonthNumber / 12) * 100;
+      }
+    }
+    return end;
+  }
+
+  get hash() {
+    const hashTable: { [key: string]: Partial<RecordItem>[] } = {};
+    if (this.MonthOrDay === "day") {
+      this.XArray?.forEach((array) => {
+        if (!(array in hashTable)) {
+          hashTable[array] = [this.defaultDate];
         }
         RecordModel.RecordList.forEach((record) => {
-          if (this.data.YearNumber + "-" + x === record.date) {
-            this.hash[x].push(record);
+          if (this.data.YearNumber + "-" + array === record.date) {
+            hashTable[array].push(record);
           }
         });
       });
     } else if (this.MonthOrDay === "month") {
-      for (let i = 1; i < 13; i++) {
-        this.XArray.push(i.toString());
-      }
-      if (this.data.MonthNumber < 8) {
-        this.startSet = 0;
-        this.endSet = 50;
-      } else {
-        this.endSet = (this.data.MonthNumber / 12) * 100;
-        this.startSet = this.endSet - 50;
-      }
-      this.XArray.forEach((x) => {
-        if (!(x in this.hash)) {
-          this.hash[x] = [this.defaultDate];
+      this.XArray.forEach((array) => {
+        if (!(array in hashTable)) {
+          hashTable[array] = [this.defaultDate];
         }
         RecordModel.RecordList.forEach((record) => {
-          if (x === record.month) {
-            this.hash[x].push(record);
+          if (array === record.month) {
+            hashTable[array].push(record);
           }
         });
       });
     }
+    return hashTable;
+  }
+  get Spending() {
+    const SpendingArray: number[] = [];
     this.ChartArrays.forEach((array) => {
       let spending = [0];
-      let income = [0];
       array[1].map((a) => {
         if (a.type === "-" && a.result) {
           spending.push(a.result);
         }
-        if (a.type === "+" && a.result) {
-          income.push(a.result);
-        }
-        return { spending, income };
+        return spending;
       });
-      this.Income.push(
-        income.reduce((sum, item) => {
-          return sum + item;
-        }, 0)
-      );
-      this.Spending.push(
+      SpendingArray.push(
         spending.reduce((sum, item) => {
           return sum + item;
         }, 0)
       );
     });
+    return SpendingArray;
+  }
+  get Income() {
+    const IncomeArray: number[] = [];
+    this.ChartArrays.forEach((array) => {
+      let income = [0];
+      array[1].map((a) => {
+        if (a.type === "+" && a.result) {
+          income.push(a.result);
+        }
+        return income;
+      });
+      IncomeArray.push(
+        income.reduce((sum, item) => {
+          return sum + item;
+        }, 0)
+      );
+    });
+    return IncomeArray;
+  }
+  get ChartArrays() {
+    return Object.entries(this.hash);
   }
   get option() {
     return {
