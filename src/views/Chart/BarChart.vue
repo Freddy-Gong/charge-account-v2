@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import echarts from "echarts";
 import Time from "@/lib/Time.ts";
 import { RecordModel } from "@/model/RecordModel.ts";
@@ -23,6 +23,7 @@ export default class BarChart extends Vue {
     note: "",
   };
   ec = echarts as any;
+  MyEcharts: echarts;
   get XArray() {
     const array: string[] = [];
     if (this.MonthOrDay === "day") {
@@ -66,7 +67,6 @@ export default class BarChart extends Vue {
     }
     return end;
   }
-
   get hash() {
     const hashTable: { [key: string]: Partial<RecordItem>[] } = {};
     if (this.MonthOrDay === "day") {
@@ -183,13 +183,29 @@ export default class BarChart extends Vue {
       ],
     };
   }
+  @Watch("IncomeOrSpending")
+  onIncomeOrSpendingChange() {
+    if (this.IncomeOrSpending === "-") {
+      this.MyEcharts.setOption(this.option);
+    } else {
+      this.MyEcharts.setOption(this.option2);
+    }
+  }
+  @Watch("MonthOrDay")
+  onMonthOrDay() {
+    if (this.IncomeOrSpending === "-") {
+      this.MyEcharts.setOption(this.option);
+    } else {
+      this.MyEcharts.setOption(this.option2);
+    }
+  }
   mounted() {
     (this.$refs.container as HTMLDivElement).style.height = "350px";
-    const MyEcharts = this.ec.init(this.$refs.container as HTMLDivElement);
+    this.MyEcharts = this.ec.init(this.$refs.container as HTMLDivElement);
     if (this.IncomeOrSpending === "-") {
-      MyEcharts.setOption(this.option);
+      this.MyEcharts.setOption(this.option);
     } else {
-      MyEcharts.setOption(this.option2);
+      this.MyEcharts.setOption(this.option2);
     }
   }
 }
