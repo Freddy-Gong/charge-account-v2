@@ -1,12 +1,15 @@
 <template>
   <div class="HeaderWrapper">
     <div class="time">
-      <span class="active">月</span>
+      <span
+        :class="MonthOrDay === 'month' && 'active'"
+        @click="$emit('update:MonthOrDay','month')"
+      >月</span>
       <span class="line"></span>
-      <span>日</span>
+      <span :class="MonthOrDay === 'day' && 'active'" @click="$emit('update:MonthOrDay','day')">日</span>
     </div>
     <div>{{Day.MonthAndDay}}</div>
-    <select defaultValue="-" class="select" onchange="{props.changeCategory}">
+    <select defaultValue="-" class="select" @change="changeType">
       <option value="-">支出</option>
       <option value="+">收入</option>
     </select>
@@ -14,12 +17,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import Time from "@/lib/Time.ts";
 
 @Component
 export default class ChartHeader extends Vue {
+  @Prop(String) readonly MonthOrDay!: "day" | "month";
+  @Prop(String) readonly IncomeOrSpending!: "-" | "+";
   Day = Time();
+  changeType() {
+    if (this.IncomeOrSpending === "-") {
+      this.$emit("update:IncomeOrSpending", "+");
+    } else {
+      this.$emit("update:IncomeOrSpending", "-");
+    }
+  }
 }
 </script>
 

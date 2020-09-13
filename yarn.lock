@@ -1629,6 +1629,13 @@
   dependencies:
     "@types/express" "*"
 
+"@types/echarts@^4.6.5":
+  version "4.6.5"
+  resolved "https://registry.npm.taobao.org/@types/echarts/download/@types/echarts-4.6.5.tgz?cache=0&sync_timestamp=1598488511781&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fecharts%2Fdownload%2F%40types%2Fecharts-4.6.5.tgz#6aba35e7d5fdb97f0852865a11ad1cd52f0b72fe"
+  integrity sha1-aro159X9uX8IUoZaEa0c1S8Lcv4=
+  dependencies:
+    "@types/zrender" "*"
+
 "@types/ejs@^2.7.0":
   version "2.7.0"
   resolved "https://registry.npm.taobao.org/@types/ejs/download/@types/ejs-2.7.0.tgz#bc84e083eae38f64a287a6dab9012bbe1d96e295"
@@ -1970,6 +1977,11 @@
   version "0.8.1"
   resolved "https://registry.npm.taobao.org/@types/zen-observable/download/@types/zen-observable-0.8.1.tgz?cache=0&sync_timestamp=1599309355013&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fzen-observable%2Fdownload%2F%40types%2Fzen-observable-0.8.1.tgz#5668c0bce55a91f2b9566b1d8a4c0a8dbbc79764"
   integrity sha1-VmjAvOVakfK5VmsdikwKjbvHl2Q=
+
+"@types/zrender@*":
+  version "4.0.0"
+  resolved "https://registry.npm.taobao.org/@types/zrender/download/@types/zrender-4.0.0.tgz#a6806f12ec4eccaaebd9b0d816f049aca6188fbd"
+  integrity sha1-poBvEuxOzKrr2bDYFvBJrKYYj70=
 
 "@typescript-eslint/eslint-plugin@^2.33.0":
   version "2.34.0"
@@ -5890,6 +5902,13 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
+
+echarts@^4.9.0:
+  version "4.9.0"
+  resolved "https://registry.npm.taobao.org/echarts/download/echarts-4.9.0.tgz?cache=0&sync_timestamp=1598585900722&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fecharts%2Fdownload%2Fecharts-4.9.0.tgz#a9b9baa03f03a2a731e6340c55befb57a9e1347d"
+  integrity sha1-qbm6oD8Doqcx5jQMVb77V6nhNH0=
+  dependencies:
+    zrender "4.3.2"
 
 editorconfig@^0.15.3:
   version "0.15.3"
@@ -15285,3 +15304,8 @@ zen-observable@^0.8.0:
   version "0.8.15"
   resolved "https://registry.npm.taobao.org/zen-observable/download/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha1-lkFcUS2OP/2SCv04iWBOMLnqrBU=
+
+zrender@4.3.2:
+  version "4.3.2"
+  resolved "https://registry.npm.taobao.org/zrender/download/zrender-4.3.2.tgz?cache=0&sync_timestamp=1597683935920&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fzrender%2Fdownload%2Fzrender-4.3.2.tgz#ec7432f9415c82c73584b6b7b8c47e1b016209c6"
+  integrity sha1-7HQy+UFcgsc1hLa3uMR+GwFiCcY=

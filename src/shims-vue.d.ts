@@ -12,4 +12,8 @@ declare module 'vue/types/vue' {
     $dayDate: any
   }
 }
+declare module 'echarts' {
+  import echarts from 'echarts'
+  export default echarts
+};
 
