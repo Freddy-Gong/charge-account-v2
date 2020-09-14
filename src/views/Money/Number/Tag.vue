@@ -1,6 +1,5 @@
 <template>
   <div class="Tags">
-    {{Tags}}
     <div
       v-for="tag in showTags"
       :key="tag.id"
@@ -28,8 +27,6 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import TagModul from "@/model/TagModel.ts";
 import Icon from "@/components/Icon.vue";
 
-TagModul.getTag();
-
 @Component({
   components: { Icon },
 })
@@ -43,13 +40,16 @@ export default class Tag extends Vue {
     return this.Tags.filter((tag) => tag.category === this.type);
   }
   deleteTag(id: number) {
+    console.log(1);
     TagModul.deleteTag(id);
+    this.Tags = TagModul.TagList;
   }
   select(id: number) {
     this.$emit("update:selectedTagId", id);
   }
   addTag() {
     TagModul.addTag(this.type);
+    this.Tags = TagModul.TagList;
   }
 }
 </script>
