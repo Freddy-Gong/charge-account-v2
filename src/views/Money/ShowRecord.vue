@@ -88,6 +88,7 @@ export default class ShowRecord extends Vue {
   position: absolute;
   width: 100%;
   overflow: scroll;
+  height: 450px;
   > .title {
     > span {
       &.line {
