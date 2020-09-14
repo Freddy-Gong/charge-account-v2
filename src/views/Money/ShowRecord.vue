@@ -14,7 +14,8 @@
             <span v-if="tag.id === r.selectedTagId" class="record">
               <span>{{r.note}}</span>
               <span>{{tag.name}}</span>
-              <Icon :name="tag.name" />
+              <Icon v-if="IconName.indexOf(tag.name)>=0" :name="tag.name" class="sign" />
+              <div v-if="!(IconName.indexOf(tag.name)>=0)" class="default sign">{{tag.name[0]}}</div>
               <span>{{parseFloat(r.type + r.result.toString())}}</span>
               <span></span>
             </span>
@@ -25,7 +26,8 @@
             <span v-if="tag.id === r.selectedTagId" class="record">
               <span></span>
               <span>{{parseFloat(r.type + r.result.toString())}}</span>
-              <Icon :name="tag.name" />
+              <Icon v-if="IconName.indexOf(tag.name)>=0" :name="tag.name" class="sign" />
+              <div v-if="!(IconName.indexOf(tag.name)>=0)" class="default sign">{{tag.name[0]}}</div>
               <span>{{tag.name}}</span>
               <span>{{r.note}}</span>
             </span>
@@ -45,6 +47,19 @@ import Icon from "@/components/Icon.vue";
   components: { Icon },
 })
 export default class ShowRecord extends Vue {
+  IconName = [
+    "编辑",
+    "餐饮",
+    "工资",
+    "购物",
+    "红包",
+    "奖金",
+    "交通",
+    "教育",
+    "其他",
+    "医疗",
+    "娱乐",
+  ];
   get recordList() {
     const hash: { [key: string]: RecordItem[] } = {};
     RecordModel.RecordList.forEach((record) => {
@@ -102,5 +117,12 @@ export default class ShowRecord extends Vue {
     margin: 0 8px;
     width: 3em;
   }
+}
+.default {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3em;
+  height: 3em;
 }
 </style>

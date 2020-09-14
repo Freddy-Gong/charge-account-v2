@@ -7,7 +7,8 @@
       :class="selectedTagId===tag.id && 'selected'"
       @click="select(tag.id)"
     >
-      <Icon :name="tag.name" class="sign" />
+      <Icon v-if="IconName.indexOf(tag.name)>=0" :name="tag.name" class="sign" />
+      <div v-if="!(IconName.indexOf(tag.name)>=0)" class="default sign">{{tag.name[0]}}</div>
       <span>{{tag.name}}</span>
       <Icon
         name="删除"
@@ -35,7 +36,19 @@ export default class Tag extends Vue {
   @Prop(Boolean) readonly manger!: boolean;
   @Prop(Number) readonly selectedTagId: number | undefined;
   Tags = TagModul.TagList;
-
+  IconName = [
+    "编辑",
+    "餐饮",
+    "工资",
+    "购物",
+    "红包",
+    "奖金",
+    "交通",
+    "教育",
+    "其他",
+    "医疗",
+    "娱乐",
+  ];
   get showTags() {
     return this.Tags.filter((tag) => tag.category === this.type);
   }
@@ -77,9 +90,18 @@ export default class Tag extends Vue {
     position: relative;
     > .icon {
       border-radius: 50px;
-      padding: 10px;
+      padding: 10px 0;
       height: 3.5em;
       width: 3.5em;
+    }
+    > .default {
+      border-radius: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 3.5em;
+      width: 3.5em;
+      font-size: 16px;
     }
     > .delete {
       display: none;
