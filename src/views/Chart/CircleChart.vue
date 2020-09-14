@@ -14,6 +14,7 @@ export default class CircleChart extends Vue {
   @Prop(String) readonly time!: string;
   @Prop(String) readonly IncomeOrSpending!: "-" | "+";
   @Prop(Object) hash!: { [key: string]: Partial<RecordItem>[] };
+  @Prop(String) readonly MonthOrDay!: "month" | "day";
   MyEcharts: any;
   get circleData() {
     return this.hash[this.time];
@@ -129,7 +130,10 @@ export default class CircleChart extends Vue {
   onTimeChange() {
     this.chart();
   }
-
+  @Watch("MonthOrDay")
+  onMonthOrDayChange() {
+    this.chart();
+  }
   mounted() {
     (this.$refs.container as HTMLDivElement).style.height = "350px";
     this.MyEcharts = this.ec.init(this.$refs.container as HTMLDivElement);

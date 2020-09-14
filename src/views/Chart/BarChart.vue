@@ -1,7 +1,12 @@
 <template>
   <div>
     <div ref="container"></div>
-    <CircleChart :time="time" :IncomeOrSpending="IncomeOrSpending" :hash="hash" />
+    <CircleChart
+      :time="time"
+      :IncomeOrSpending="IncomeOrSpending"
+      :hash="hash"
+      :MonthOrDay="MonthOrDay"
+    />
   </div>
 </template>
 
