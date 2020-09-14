@@ -1,7 +1,7 @@
 <template>
   <div>
     <div ref="container"></div>
-    <div></div>
+    <CircleChart :time="time" :IncomeOrSpending="IncomeOrSpending" :hash="hash" />
   </div>
 </template>
 
@@ -10,12 +10,15 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import echarts from "echarts";
 import Time from "@/lib/Time.ts";
 import { RecordModel } from "@/model/RecordModel.ts";
+import CircleChart from "./CircleChart.vue";
 
-@Component
+@Component({
+  components: { CircleChart },
+})
 export default class BarChart extends Vue {
   @Prop(String) readonly MonthOrDay!: "day" | "month";
   @Prop(String) readonly IncomeOrSpending!: "-" | "+";
-  @Prop(String) time!:string
+  @Prop(String) time!: string;
   data = Time();
   defaultDate = {
     tagId: -1 as number,

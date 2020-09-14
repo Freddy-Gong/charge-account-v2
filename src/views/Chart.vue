@@ -11,7 +11,6 @@
       :IncomeOrSpending="IncomeOrSpending"
       :time.sync="data.MonthAndDay"
     />
-    <CircleChart :time="data.MonthAndDay" :IncomeOrSpending="IncomeOrSpending" />
   </div>
 </template>
 
@@ -20,10 +19,9 @@ import { Component, Vue } from "vue-property-decorator";
 import ChartHeader from "./Chart/ChartHeader.vue";
 import Nav from "@/components/Nav.vue";
 import BarChart from "./Chart/BarChart.vue";
-import CircleChart from "./Chart/CircleChart.vue";
 import Time from "@/lib/Time.ts";
 @Component({
-  components: { ChartHeader, Nav, BarChart, CircleChart },
+  components: { ChartHeader, Nav, BarChart },
 })
 export default class Chart extends Vue {
   MonthOrDay: "day" | "month" = "day";

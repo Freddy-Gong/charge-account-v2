@@ -1,17 +1,67 @@
 <template>
   <div>
     <div ref="container"></div>
+    {{circlehash}}
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import echarts from "echarts";
+import TagModule from "@/model/TagModel.ts";
 @Component
 export default class CircleChart extends Vue {
   @Prop(String) readonly time!: string;
   @Prop(String) readonly IncomeOrSpending!: "-" | "+";
+  @Prop(Object) hash!: { [key: string]: Partial<RecordItem>[] };
   MyEcharts: any;
+  get circleData() {
+    return this.hash[this.time];
+  }
+  get tags() {
+    return TagModule.TagList;
+  }
+  get circlehash() {
+    const hash: { [key: string]: number } = {};
+    if (this.circleData) {
+      this.circleData.forEach((data) => {
+        if (
+          data.type === this.IncomeOrSpending &&
+          data.result &&
+          data.selectedTagId
+        ) {
+          const key = this.tags.filter(
+            (tag) => tag.id === data.selectedTagId
+          )[0].name;
+          if (!(key in hash)) {
+            hash[key] = 0;
+          }
+          hash[key] += data.result;
+        }
+      });
+    }
+    return hash;
+  }
+  get array() {
+    return Object.entries(this.circlehash);
+  }
+  get todayMoney() {
+    const TodayMoneyList: { value: number; name: string }[] = [];
+    this.array.forEach((a) => {
+      const inOrOutHash = { value: a[1], name: a[0] };
+      TodayMoneyList.push(inOrOutHash);
+    });
+    if (this.IncomeOrSpending === "-") {
+      if (TodayMoneyList.length === 0) {
+        TodayMoneyList.push({ value: 100, name: "未消费" });
+      }
+    } else {
+      if (TodayMoneyList.length === 0) {
+        TodayMoneyList.push({ value: 100, name: "未支出" });
+      }
+    }
+    return TodayMoneyList;
+  }
   chart() {
     if (this.IncomeOrSpending === "-") {
       this.MyEcharts.setOption(this.option);
@@ -43,13 +93,7 @@ export default class CircleChart extends Vue {
               fontWeight: "bold",
             },
           },
-          data: [
-            { value: 235, name: "视频广告" },
-            { value: 274, name: "联盟广告" },
-            { value: 310, name: "邮件营销" },
-            { value: 335, name: "直接访问" },
-            { value: 400, name: "搜索引擎" },
-          ],
+          data: this.todayMoney,
         },
       ],
     };
@@ -72,21 +116,20 @@ export default class CircleChart extends Vue {
               fontWeight: "bold",
             },
           },
-          data: [
-            { value: 235, name: "视频广告" },
-            { value: 274, name: "联盟广告" },
-            { value: 310, name: "邮件营销" },
-            { value: 335, name: "直接访问" },
-            { value: 400, name: "搜索引擎" },
-          ],
+          data: this.todayMoney,
         },
       ],
     };
+  }
+  @Watch("IncomeOrSpending")
+  onIncomeOrSpendingChange() {
+    this.chart();
   }
   @Watch("time")
   onTimeChange() {
     this.chart();
   }
+
   mounted() {
     (this.$refs.container as HTMLDivElement).style.height = "350px";
     this.MyEcharts = this.ec.init(this.$refs.container as HTMLDivElement);
