@@ -51,20 +51,7 @@ const RecordModel: recordModel = {
     }
 }
 RecordModel.getRecord()
-const hash: { [key: string]: RecordItem[] } = {}
-RecordModel.RecordList.forEach((record) => {
-    const key = record.date
-    if (!(key in hash)) {
-        hash[key] = []
-    }
-    hash[key].push(record)
-})
-const array = Object.entries(hash).sort((a, b) => {
-    if (a[0] === b[0]) return 0
-    if (a[0] > b[0]) return -1
-    if (a[0] < b[0]) return 1
-    return 0
-})
 
 
-export { RecordModel, array }
+
+export { RecordModel }

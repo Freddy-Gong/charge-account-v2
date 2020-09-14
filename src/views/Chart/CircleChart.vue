@@ -72,9 +72,15 @@ export default class CircleChart extends Vue {
   }
   ec = echarts as any;
   get option() {
+    let time: String;
+    if (this.MonthOrDay === "day") {
+      time = this.time + "日";
+    } else {
+      time = this.time + "月";
+    }
     return {
       title: {
-        text: this.time + "日消费分布",
+        text: time + "消费分布",
         textStyle: {
           fontSize: 15,
           color: "black",
@@ -100,9 +106,15 @@ export default class CircleChart extends Vue {
     };
   }
   get option2() {
+    let time: String;
+    if (this.MonthOrDay === "day") {
+      time = this.time + "日";
+    } else {
+      time = this.time + "月";
+    }
     return {
       title: {
-        text: this.time + "日收入分布",
+        text: time + "收入分布",
       },
       series: [
         {

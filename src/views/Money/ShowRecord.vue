@@ -37,16 +37,29 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { RecordModel, array } from "@/model/RecordModel.ts";
+import { RecordModel } from "@/model/RecordModel.ts";
 import TagModule from "@/model/TagModel.ts";
 import Icon from "@/components/Icon.vue";
 
-RecordModel.getRecord();
 @Component({
   components: { Icon },
 })
 export default class ShowRecord extends Vue {
   get recordList() {
+    const hash: { [key: string]: RecordItem[] } = {};
+    RecordModel.RecordList.forEach((record) => {
+      const key = record.date;
+      if (!(key in hash)) {
+        hash[key] = [];
+      }
+      hash[key].push(record);
+    });
+    const array = Object.entries(hash).sort((a, b) => {
+      if (a[0] === b[0]) return 0;
+      if (a[0] > b[0]) return -1;
+      if (a[0] < b[0]) return 1;
+      return 0;
+    });
     return array;
   }
   get tags() {
