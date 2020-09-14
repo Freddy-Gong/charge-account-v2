@@ -2,11 +2,11 @@
   <div>
     <Nav />
     <ChartHeader
-      :time="time"
+      :time="setTime"
       :MonthOrDay.sync="MonthOrDay"
       :IncomeOrSpending.sync="IncomeOrSpending"
     />
-    <BarChart :MonthOrDay="MonthOrDay" :IncomeOrSpending="IncomeOrSpending" :time.sync="time" />
+    <BarChart :MonthOrDay="MonthOrDay" :IncomeOrSpending="IncomeOrSpending" :time.sync="setTime" />
   </div>
 </template>
 
@@ -23,28 +23,14 @@ export default class Chart extends Vue {
   MonthOrDay: "day" | "month" = "day";
   IncomeOrSpending: "-" | "+" = "-";
   data = Time();
-  setTime: string = "";
+  setTime: string = this.data.MonthAndDay;
   @Watch("MonthOrDay")
   onMonthOrDay() {
-    this.setTime = "";
-  }
-  get time() {
-    let currentTime: string = "";
-    if (this.MonthOrDay === "day" && this.setTime.length === 0) {
-      currentTime = this.data.MonthAndDay;
+    if (this.MonthOrDay === "day") {
+      this.setTime = this.data.MonthAndDay;
     } else {
-      currentTime = this.setTime;
+      this.setTime = this.data.Month;
     }
-    if (this.MonthOrDay === "month" && this.setTime.length === 0) {
-      currentTime = this.data.Month;
-    } else {
-      currentTime = this.setTime;
-    }
-    return currentTime;
-  }
-  set time(value) {
-    console.log(value);
-    this.setTime = value;
   }
 }
 </script>
