@@ -6,10 +6,10 @@ type Tag = {
 }
 type tagModel = {
     TagList: Tag[]
-    getTag: () => void
+    getTag: () => Tag[]
     save: () => void
-    deleteTag: (id: number) => void
-    addTag: (type: '-' | '+') => void
+    deleteTag: (id: number) => Tag[]
+    addTag: (type: '-' | '+') => Tag[]
 }
 
 const TagModel: tagModel = {
@@ -22,6 +22,7 @@ const TagModel: tagModel = {
             { id: createID(), category: '+', name: '其他' }]
         }
         this.save()
+        return this.TagList
     },
     save() {
         window.localStorage.setItem('tags', JSON.stringify(this.TagList))
@@ -30,6 +31,7 @@ const TagModel: tagModel = {
         console.log(id)
         this.TagList = this.TagList.filter(tag => tag.id !== id)
         this.save()
+        return this.TagList
     },
     addTag(type: '-' | '+') {
         const name = window.prompt('新标签的名字')
@@ -39,6 +41,7 @@ const TagModel: tagModel = {
             window.alert('标签名重复')
         }
         this.save()
+        return this.TagList
     }
 }
 TagModel.getTag()

@@ -38,8 +38,14 @@ export default class Number extends Vue {
     month: "",
   };
   save() {
-    console.log(RecordModel.RecordList);
-    RecordModel.addRecord(this.recordItem);
+    if (this.recordItem.result === 0) {
+      window.alert("请输入金额");
+    } else if (this.recordItem.selectedTagId === 0) {
+      window.alert("请选择标签");
+    } else {
+      RecordModel.addRecord(this.recordItem);
+      window.alert("保存成功");
+    }
     this.recordItem = {
       type: "-",
       selectedTagId: 0,

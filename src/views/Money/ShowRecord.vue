@@ -37,10 +37,11 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { array } from "@/model/RecordModel.ts";
+import { RecordModel, array } from "@/model/RecordModel.ts";
 import TagModule from "@/model/TagModel.ts";
 import Icon from "@/components/Icon.vue";
 
+RecordModel.getRecord();
 @Component({
   components: { Icon },
 })
@@ -48,7 +49,9 @@ export default class ShowRecord extends Vue {
   get recordList() {
     return array;
   }
-  tags = TagModule.TagList;
+  get tags() {
+    return TagModule.TagList;
+  }
 }
 </script>
 
