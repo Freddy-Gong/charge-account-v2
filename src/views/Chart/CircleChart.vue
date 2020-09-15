@@ -1,7 +1,6 @@
 <template>
   <div>
     <div ref="container"></div>
-    {{circlehash}}
   </div>
 </template>
 
@@ -91,7 +90,7 @@ export default class CircleChart extends Vue {
         {
           name: "访问来源",
           type: "pie",
-          center: ["50%", "35%"],
+          center: ["50%", "50%"],
           radius: ["30%", "50%"],
           emphasis: {
             label: {
@@ -120,7 +119,7 @@ export default class CircleChart extends Vue {
         {
           name: "访问来源",
           type: "pie",
-          center: ["50%", "35%"],
+          center: ["50%", "50%"],
           radius: ["30%", "50%"],
           emphasis: {
             label: {

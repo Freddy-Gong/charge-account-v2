@@ -27,7 +27,9 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import TagModul from "@/model/TagModel.ts";
 import Icon from "@/components/Icon.vue";
+import TagModel from "@/model/TagModel.ts";
 
+TagModel.getTag();
 @Component({
   components: { Icon },
 })
@@ -35,7 +37,9 @@ export default class Tag extends Vue {
   @Prop(String) readonly type!: "-" | "+";
   @Prop(Boolean) readonly manger!: boolean;
   @Prop(Number) readonly selectedTagId: number | undefined;
+
   Tags = TagModul.TagList;
+
   IconName = [
     "编辑",
     "餐饮",
