@@ -5,7 +5,7 @@
       :time="time"
       :IncomeOrSpending="IncomeOrSpending"
       :hash="hash"
-      :MonthOrDay="MonthOrDay"
+      :MonthOrDay="MonthOrDay "
     />
   </div>
 </template>

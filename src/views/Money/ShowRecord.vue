@@ -1,22 +1,36 @@
 <template>
   <div class="RecordWrapper">
     <div v-for="record in recordList" :key="record[0]" class="title">
-      <span class="day">{{record[1][0].day +'号'}}</span>
-      <span class="line" />
+      <span class="day">{{
+        record[1][0].month !== Day.Month
+          ? record[1][0].month + "月" + record[1][0].day + "号"
+          : record[1][0].day + "号"
+      }}</span>
       <span>
-        {{record[1].reduce((sum, item) => {
-        return sum + parseFloat(item.type + item.result.toString())
-        }, 0)}}
+        {{
+          record[1].reduce((sum, item) => {
+            return sum + parseFloat(item.type + item.result.toString());
+          }, 0)
+        }}
       </span>
       <div v-for="r in record[1]" :key="r.result">
         <div v-if="r.type === '-' && tags">
           <span v-for="tag in tags" :key="tag.id">
             <span v-if="tag.id === r.selectedTagId" class="record">
-              <span>{{r.note}}</span>
-              <span>{{tag.name}}</span>
-              <Icon v-if="IconName.indexOf(tag.name)>=0" :name="tag.name" class="sign" />
-              <div v-if="!(IconName.indexOf(tag.name)>=0)" class="default sign">{{tag.name[0]}}</div>
-              <span>{{parseFloat(r.type + r.result.toString())}}</span>
+              <span>{{ r.note }}</span>
+              <span>{{ tag.name }}</span>
+              <Icon
+                v-if="IconName.indexOf(tag.name) >= 0"
+                :name="tag.name"
+                class="sign"
+              />
+              <div
+                v-if="!(IconName.indexOf(tag.name) >= 0)"
+                class="default sign"
+              >
+                {{ tag.name[0] }}
+              </div>
+              <span>{{ parseFloat(r.type + r.result.toString()) }}</span>
               <span></span>
             </span>
           </span>
@@ -25,11 +39,20 @@
           <span v-for="tag in tags" :key="tag.id">
             <span v-if="tag.id === r.selectedTagId" class="record">
               <span></span>
-              <span>{{parseFloat(r.type + r.result.toString())}}</span>
-              <Icon v-if="IconName.indexOf(tag.name)>=0" :name="tag.name" class="sign" />
-              <div v-if="!(IconName.indexOf(tag.name)>=0)" class="default sign">{{tag.name[0]}}</div>
-              <span>{{tag.name}}</span>
-              <span>{{r.note}}</span>
+              <span>{{ parseFloat(r.type + r.result.toString()) }}</span>
+              <Icon
+                v-if="IconName.indexOf(tag.name) >= 0"
+                :name="tag.name"
+                class="sign"
+              />
+              <div
+                v-if="!(IconName.indexOf(tag.name) >= 0)"
+                class="default sign"
+              >
+                {{ tag.name[0] }}
+              </div>
+              <span>{{ tag.name }}</span>
+              <span>{{ r.note }}</span>
             </span>
           </span>
         </div>
@@ -42,6 +65,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { RecordModel } from "@/model/RecordModel.ts";
 import TagModule from "@/model/TagModel.ts";
 import Icon from "@/components/Icon.vue";
+import Time from "@/lib/Time";
 
 @Component({
   components: { Icon },
@@ -60,6 +84,7 @@ export default class ShowRecord extends Vue {
     "医疗",
     "娱乐",
   ];
+  Day = Time();
   get recordList() {
     const hash: { [key: string]: RecordItem[] } = {};
     RecordModel.RecordList.forEach((record) => {
@@ -91,12 +116,11 @@ export default class ShowRecord extends Vue {
   height: 450px;
   > .title {
     > span {
-      &.line {
-        border-radius: 10px;
-        background: black;
-        margin: 0 15px;
-        border: 1px solid black;
-      }
+      display: inline-block;
+      width: 80px;
+    }
+    > .day {
+      border-right: 2px solid gray;
     }
     > div {
       > div {

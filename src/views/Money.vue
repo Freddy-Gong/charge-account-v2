@@ -3,14 +3,14 @@
     <Nav />
     <div class="Wrapper">
       <header>
-        <span>{{Day.YearAndMonth}}</span>
+        <span>{{ Day.YearAndMonth }}</span>
         <span>本月结余</span>
-        <span class="in">{{Day.YearAndMonth}}</span>
+        <span class="in">{{ Day.YearAndMonth }}</span>
       </header>
-      <main>{{Residue}}</main>
+      <main>{{ Residue }}</main>
       <footer>
-        <span>收入:{{Income}}</span>
-        <span>支出:{{Spending}}</span>
+        <span>收入:{{ Income }}</span>
+        <span>支出:{{ Spending }}</span>
       </footer>
     </div>
     <div class="IconWrapper">
@@ -21,7 +21,7 @@
         </router-link>
       </div>
     </div>
-    <div class="gap">xxx</div>
+    <div class="gap" />
     <Show-record />
   </div>
 </template>

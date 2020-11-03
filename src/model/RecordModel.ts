@@ -42,8 +42,15 @@ const RecordModel: recordModel = {
         window.localStorage.setItem('record', JSON.stringify(this.RecordList))
     },
     addRecord(Record: RecordItem) {
-
-        Record.date = time.FullTime
+        if (parseInt(time.Day) > 10 && parseInt(time.Month) > 10) {
+            Record.date = time.FullTime
+        } else if (parseInt(time.Day) > 10 && parseInt(time.Month) < 10) {
+            Record.date = time.FullTimeDay
+        } else if (parseInt(time.Day) < 10 && parseInt(time.Month) < 10) {
+            Record.date = time.FullTimeMonth
+        } else {
+            Record.date = time.FullDate
+        }
         Record.day = time.Day
         Record.month = time.Month
         this.RecordList.push(Record)
