@@ -3,12 +3,19 @@
     <div class="time">
       <span
         :class="MonthOrDay === 'month' && 'active'"
-        @click="$emit('update:MonthOrDay','month')"
-      >月</span>
+        @click="$emit('update:MonthOrDay', 'month')"
+        >月</span
+      >
       <span class="line"></span>
-      <span :class="MonthOrDay === 'day' && 'active'" @click="$emit('update:MonthOrDay','day')">日</span>
+      <span
+        :class="MonthOrDay === 'day' && 'active'"
+        @click="$emit('update:MonthOrDay', 'day')"
+        >日</span
+      >
     </div>
-    <div>{{time}}</div>
+    <Icon name="Right" @click.native="DownDate" />
+    <div class="date">{{ MonthOrDay === "day" ? time : time + "月" }}</div>
+    <Icon name="Left" @click.native="UpDate" />
     <select defaultValue="-" class="select" @change="changeType">
       <option value="-">支出</option>
       <option value="+">收入</option>
@@ -18,17 +25,62 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import Icon from "@/components/Icon.vue";
 
-@Component
+@Component({
+  components: { Icon },
+})
 export default class ChartHeader extends Vue {
   @Prop(String) readonly MonthOrDay!: "day" | "month";
   @Prop(String) readonly IncomeOrSpending!: "-" | "+";
-  @Prop(String) time!: string;
+  @Prop(String) readonly time!: string;
   changeType() {
     if (this.IncomeOrSpending === "-") {
       this.$emit("update:IncomeOrSpending", "+");
     } else {
       this.$emit("update:IncomeOrSpending", "-");
+    }
+  }
+  UpDate() {
+    let currentMonth = parseInt(this.time);
+    if (this.MonthOrDay === "day") {
+      let currentDay =
+        parseInt(this.time.substr(this.time.indexOf("-") + 1)) + 1;
+
+      if (currentDay === 32) {
+        this.$emit("update:time", currentMonth + 1 + "-01");
+      } else if (currentDay < 10) {
+        this.$emit("update:time", currentMonth + "-0" + currentDay);
+      } else {
+        this.$emit("update:time", currentMonth + "-" + currentDay);
+      }
+    } else {
+      if (currentMonth === 12) {
+        this.$emit("update:time", "1");
+      } else {
+        this.$emit("update:time", (currentMonth + 1).toString());
+      }
+    }
+  }
+  DownDate() {
+    let currentMonth = parseInt(this.time);
+    if (this.MonthOrDay === "day") {
+      let currentDay =
+        parseInt(this.time.substr(this.time.indexOf("-") + 1)) - 1;
+      if (currentDay === 0) {
+        this.$emit("update:time", currentMonth - 1 + "-31");
+      } else if (currentDay < 10) {
+        console.log(currentMonth + "-0" + currentDay);
+        this.$emit("update:time", currentMonth + "-0" + currentDay);
+      } else {
+        this.$emit("update:time", currentMonth + "-" + currentDay);
+      }
+    } else {
+      if (currentMonth === 1) {
+        this.$emit("update:time", "12");
+      } else {
+        this.$emit("update:time", (currentMonth - 1).toString());
+      }
     }
   }
 }
@@ -87,5 +139,8 @@ export default class ChartHeader extends Vue {
       }
     }
   }
+}
+.date {
+  margin: 0 -32px;
 }
 </style>

@@ -5,7 +5,7 @@
       :time="time"
       :IncomeOrSpending="IncomeOrSpending"
       :hash="hash"
-      :MonthOrDay="MonthOrDay "
+      :MonthOrDay="MonthOrDay"
     />
   </div>
 </template>
@@ -50,7 +50,11 @@ export default class BarChart extends Vue {
     const array: string[] = [];
     if (this.MonthOrDay === "day") {
       for (let i = 1; i < 31; i++) {
-        array.push(this.data.MonthNumber + "-" + i);
+        if (i < 10) {
+          array.push(parseInt(this.time) + "-0" + i);
+        } else {
+          array.push(parseInt(this.time) + "-" + i);
+        }
       }
     } else if (this.MonthOrDay === "month") {
       for (let i = 1; i < 13; i++) {
@@ -62,11 +66,11 @@ export default class BarChart extends Vue {
   get startSet() {
     let start: number = 0;
     if (this.MonthOrDay === "day") {
-      if (this.data.DayNumber >= 8) {
+      if (parseInt(this.time.substr(this.time.indexOf("-") + 1)) >= 8) {
         start = this.endSet - 20;
       }
     } else if (this.MonthOrDay === "month") {
-      if (this.data.MonthNumber >= 8) {
+      if (parseInt(this.time) >= 8) {
         start = this.endSet - 50;
       }
     }
@@ -75,16 +79,17 @@ export default class BarChart extends Vue {
   get endSet() {
     let end: number = 0;
     if (this.MonthOrDay === "day") {
-      if (this.data.DayNumber < 8) {
+      if (parseInt(this.time.substr(this.time.indexOf("-") + 1)) < 8) {
         end = 20;
       } else {
-        end = (this.data.DayNumber / 30) * 100;
+        end =
+          (parseInt(this.time.substr(this.time.indexOf("-") + 1)) / 30) * 100;
       }
     } else if (this.MonthOrDay === "month") {
-      if (this.data.MonthNumber < 8) {
+      if (parseInt(this.time) < 8) {
         end = 50;
       } else {
-        end = (this.data.MonthNumber / 12) * 100;
+        end = (parseInt(this.time) / 12) * 100;
       }
     }
     return end;
@@ -204,6 +209,10 @@ export default class BarChart extends Vue {
         },
       ],
     };
+  }
+  @Watch("time")
+  onTimeChange() {
+    this.chart();
   }
   @Watch("IncomeOrSpending")
   onIncomeOrSpendingChange() {
