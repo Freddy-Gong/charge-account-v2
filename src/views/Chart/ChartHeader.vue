@@ -125,8 +125,10 @@ export default class ChartHeader extends Vue {
   }
   .select {
     width: 5em;
+    height: 27px;
     color: $color;
     margin-right: 2px;
+    margin-left: 12px;
     > span {
       > span {
         position: relative;

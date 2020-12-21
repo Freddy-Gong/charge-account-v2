@@ -33,7 +33,10 @@ import Time from "@/lib/Time.ts";
 import Nav from "@/components/Nav.vue";
 import { RecordModel } from "@/model/RecordModel.ts";
 import ShowRecord from "@/views/Money/ShowRecord.vue";
-
+const width = document.body.clientWidth;
+if (width > 500) {
+  alert("为了更加舒适使用该应用，请用手机打开该应用");
+}
 @Component({
   components: { Icon, Nav, ShowRecord },
 })
