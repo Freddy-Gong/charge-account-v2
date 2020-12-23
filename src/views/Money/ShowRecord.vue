@@ -110,7 +110,6 @@ export default class ShowRecord extends Vue {
 
 <style scoped lang='scss'>
 .RecordWrapper {
-  position: absolute;
   width: 100%;
   overflow: auto;
   height: 450px;
