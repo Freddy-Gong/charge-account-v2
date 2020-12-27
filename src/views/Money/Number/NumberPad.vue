@@ -2,7 +2,7 @@
   <div class="Wrapper">
     <div class="calculator">
       <div class="note" @click.stop="note">备注</div>
-      <div class="result">{{sectionResult}}</div>
+      <div class="result">{{ sectionResult }}</div>
       <button class="number-1" @click="input">1</button>
       <button class="number-2" @click="input">2</button>
       <button class="number-3" @click="input">3</button>
@@ -36,16 +36,22 @@ import Icon from "@/components/Icon.vue";
 })
 export default class NumberPad extends Vue {
   @Prop(Number) readonly result!: number;
+  @Prop(Boolean) readonly back!: boolean;
   sectionResult = this.result.toString();
   isOperator: Boolean = false;
   canDot: Boolean = true;
   input(e: MouseEvent) {
     const text = (e.target as HTMLButtonElement).textContent;
+    if (this.sectionResult.length >= 9) {
+      return;
+    }
     if (text) {
       if ("+-x÷".indexOf(text) >= 0 && this.isOperator === true) {
         this.sectionResult += text;
         this.isOperator = false;
+        this.canDot = true;
       } else if (text === "." && this.canDot === true) {
+        console.log(123);
         this.sectionResult += text;
         this.canDot = false;
       } else if (
@@ -54,8 +60,9 @@ export default class NumberPad extends Vue {
       ) {
         this.sectionResult = text;
         this.isOperator = true;
-      } else {
+      } else if ("0123456789".indexOf(text) >= 0) {
         this.sectionResult += text;
+        this.isOperator = true;
       }
     }
     this.$emit("update:result", parseFloat(this.sectionResult));
@@ -88,8 +95,17 @@ export default class NumberPad extends Vue {
     this.$emit("update:result", parseFloat(this.sectionResult));
   }
   ok() {
+    this.calculate();
     this.$emit("submit");
-    this.sectionResult = "0";
+    setTimeout(() => {
+      console.log(this.back);
+      if (this.back) {
+        console.log(1);
+        this.sectionResult = "0";
+      } else {
+        this.$emit("update:result", parseFloat(this.sectionResult));
+      }
+    });
   }
 }
 </script>
@@ -97,6 +113,7 @@ export default class NumberPad extends Vue {
 <style scoped lang='scss'>
 @import "~@/Help.scss";
 .Wrapper {
+  margin-top: 5%;
   .calculator {
     .note {
       grid-area: note;

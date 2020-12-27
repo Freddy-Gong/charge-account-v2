@@ -18,6 +18,7 @@ body {
   color: #2c3e50;
   max-width: 500px;
   margin: 0 auto;
+  min-height:100vh;
 }
 a {
   margin: 5px 10px;

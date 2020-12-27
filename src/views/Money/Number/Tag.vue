@@ -4,12 +4,18 @@
       v-for="tag in showTags"
       :key="tag.id"
       class="TagWrapper"
-      :class="selectedTagId===tag.id && 'selected'"
+      :class="selectedTagId === tag.id && 'selected'"
       @click="select(tag.id)"
     >
-      <Icon v-if="IconName.indexOf(tag.name)>=0" :name="tag.name" class="sign" />
-      <div v-if="!(IconName.indexOf(tag.name)>=0)" class="default sign">{{tag.name[0]}}</div>
-      <span>{{tag.name}}</span>
+      <Icon
+        v-if="IconName.indexOf(tag.name) >= 0"
+        :name="tag.name"
+        class="sign"
+      />
+      <div v-if="!(IconName.indexOf(tag.name) >= 0)" class="default sign">
+        {{ tag.name[0] }}
+      </div>
+      <span>{{ tag.name }}</span>
       <Icon
         name="删除"
         :class="'delete' + (manger ? 'Active' : '')"
@@ -115,7 +121,7 @@ export default class Tag extends Vue {
       position: absolute;
       top: -12px;
       right: -4px;
-      width: 2em;
+      width: 1em;
     }
     > span {
       padding: 5px 0px;

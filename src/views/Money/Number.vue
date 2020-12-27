@@ -2,8 +2,17 @@
   <div>
     <Header :manger.sync="manger" />
     <Type :type.sync="recordItem.type" />
-    <Tag :type="recordItem.type" :manger="manger" :selectedTagId.sync="recordItem.selectedTagId" />
-    <NumberPad :result.sync="recordItem.result" :note.sync="recordItem.note" @submit="save" />
+    <Tag
+      :type="recordItem.type"
+      :manger="manger"
+      :selectedTagId.sync="recordItem.selectedTagId"
+    />
+    <NumberPad
+      :result.sync="recordItem.result"
+      :note.sync="recordItem.note"
+      @submit="save"
+      :back="back"
+    />
   </div>
 </template>
 
@@ -28,6 +37,7 @@ type RecordItem = {
 })
 export default class Number extends Vue {
   manger: Boolean = false;
+  back: Boolean = true;
   recordItem: RecordItem = {
     type: "-",
     selectedTagId: 0,
@@ -41,8 +51,11 @@ export default class Number extends Vue {
     if (this.recordItem.result === 0) {
       window.alert("请输入金额");
     } else if (this.recordItem.selectedTagId === 0) {
+      this.back = false;
+      console.log(this.back);
       window.alert("请选择标签");
     } else {
+      this.back = true;
       RecordModel.addRecord(this.recordItem);
       window.alert("保存成功");
     }
