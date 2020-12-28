@@ -51,7 +51,10 @@ export default class NumberPad extends Vue {
         this.isOperator = false;
         this.canDot = true;
       } else if (text === "." && this.canDot === true) {
-        console.log(123);
+        let n = this.sectionResult.length;
+        if (this.sectionResult[n - 1] === ("x" || "+" || "-" || "÷")) {
+          return;
+        }
         this.sectionResult += text;
         this.canDot = false;
       } else if (
@@ -61,6 +64,14 @@ export default class NumberPad extends Vue {
         this.sectionResult = text;
         this.isOperator = true;
       } else if ("0123456789".indexOf(text) >= 0) {
+        let n = this.sectionResult.length;
+        if (
+          text === "0" &&
+          this.sectionResult[n - 1] === "0" &&
+          this.sectionResult[n - 2] === ("x" || "-" || "+" || "÷")
+        ) {
+          return;
+        }
         this.sectionResult += text;
         this.isOperator = true;
       }
