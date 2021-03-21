@@ -62,7 +62,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { RecordModel } from "@/model/RecordModel.ts";
+import { GetRecordModel } from "@/model/RecordModel.ts";
 import TagModule from "@/model/TagModel.ts";
 import Icon from "@/components/Icon.vue";
 import Time from "@/lib/Time";
@@ -85,9 +85,23 @@ export default class ShowRecord extends Vue {
     "娱乐",
   ];
   Day = Time();
+  RecordModel: any = {
+    RecordList: [],
+    CurrentMonthResidue() {},
+    CurrentMonthSpending() {},
+    CurrentMonthIncome() {},
+    getRecord() {},
+    saveRecord() {},
+    addRecord() {},
+  };
+  mounted() {
+    GetRecordModel().then((result: any) => {
+      this.RecordModel = result;
+    });
+  }
   get recordList() {
     const hash: { [key: string]: RecordItem[] } = {};
-    RecordModel.RecordList.forEach((record) => {
+    this.RecordModel.RecordList.forEach((record: RecordItem) => {
       const key = record.date;
       if (!(key in hash)) {
         hash[key] = [];

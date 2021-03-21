@@ -1,4 +1,5 @@
 import Time from '@/lib/Time.ts'
+import axios from 'axios'
 
 type RecordItem = {
     selectedTagId: number
@@ -34,8 +35,12 @@ const RecordModel: recordModel = {
         const Income = CurrentMonthRecords.filter(record => record.type === '+').reduce((sum, item) => { return sum + item.result }, 0)
         return Income
     },
-    getRecord() {
-        this.RecordList = JSON.parse(window.localStorage.getItem('record') || '[]')
+    async getRecord() {
+        await axios.get('http://120.77.35.114:3000/vuerecord').then((response) => {
+            this.RecordList = response.data.vuerecord
+            console.log(this.RecordList, 'axios')
+        })
+        // this.RecordList = JSON.parse(window.localStorage.getItem('record') || '[]')
         this.saveRecord()
     },
     saveRecord() {
@@ -59,7 +64,11 @@ const RecordModel: recordModel = {
     }
 }
 RecordModel.getRecord()
+console.log('--------')
+async function GetRecordModel() {
+    await RecordModel.getRecord()
+    console.log(RecordModel.RecordList, 'async')
+    return RecordModel
+}
 
-
-
-export { RecordModel }
+export { RecordModel, GetRecordModel, recordModel }
