@@ -109,9 +109,7 @@ export default class NumberPad extends Vue {
     this.calculate();
     this.$emit("submit");
     setTimeout(() => {
-      console.log(this.back);
       if (this.back) {
-        console.log(1);
         this.sectionResult = "0";
       } else {
         this.$emit("update:result", parseFloat(this.sectionResult));

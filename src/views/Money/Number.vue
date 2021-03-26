@@ -52,7 +52,6 @@ export default class Number extends Vue {
       window.alert("请输入金额");
     } else if (this.recordItem.selectedTagId === 0) {
       this.back = false;
-      console.log(this.back);
       window.alert("请选择标签");
     } else {
       this.back = true;

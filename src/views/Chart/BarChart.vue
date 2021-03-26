@@ -14,7 +14,7 @@
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import echarts from "echarts";
 import Time from "@/lib/Time.ts";
-import { RecordModel } from "@/model/RecordModel.ts";
+import { GetRecordModel, RecordModel } from "@/model/RecordModel.ts";
 import CircleChart from "./CircleChart.vue";
 
 @Component({
@@ -33,6 +33,16 @@ export default class BarChart extends Vue {
   };
   ec = echarts as any;
   MyEcharts: any; //echarts??
+  RecordModel: any = {
+    RecordList: [],
+    CurrentMonthResidue() {},
+    CurrentMonthSpending() {},
+    CurrentMonthIncome() {},
+    getRecord() {},
+    saveRecord() {},
+    addRecord() {},
+  };
+
   chart() {
     if (this.IncomeOrSpending === "-") {
       this.MyEcharts.setOption(this.option);
@@ -101,7 +111,7 @@ export default class BarChart extends Vue {
         if (!(array in hashTable)) {
           hashTable[array] = [this.defaultDate];
         }
-        RecordModel.RecordList.forEach((record) => {
+        this.RecordModel.RecordList.forEach((record: any) => {
           if (this.data.YearNumber + "-" + array === record.date) {
             hashTable[array].push(record);
           }
@@ -112,7 +122,7 @@ export default class BarChart extends Vue {
         if (!(array in hashTable)) {
           hashTable[array] = [this.defaultDate];
         }
-        RecordModel.RecordList.forEach((record) => {
+        this.RecordModel.RecordList.forEach((record: any) => {
           if (array === record.month) {
             hashTable[array].push(record);
           }
@@ -223,9 +233,12 @@ export default class BarChart extends Vue {
     this.chart();
   }
   mounted() {
-    (this.$refs.container as HTMLDivElement).style.height = "350px";
-    this.MyEcharts = this.ec.init(this.$refs.container as HTMLDivElement);
-    this.chart();
+    GetRecordModel().then((result: any) => {
+      this.RecordModel = result;
+      (this.$refs.container as HTMLDivElement).style.height = "350px";
+      this.MyEcharts = this.ec.init(this.$refs.container as HTMLDivElement);
+      this.chart();
+    });
   }
 }
 </script>

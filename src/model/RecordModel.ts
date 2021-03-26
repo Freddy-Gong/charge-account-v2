@@ -13,7 +13,7 @@ type RecordItem = {
 type recordModel = {
     RecordList: RecordItem[]
     getRecord: () => void
-    saveRecord: () => void
+    saveRecord: (Record: RecordItem) => void
     addRecord: (Record: RecordItem) => void
     CurrentMonthResidue: () => number
     CurrentMonthSpending: () => number
@@ -38,37 +38,33 @@ const RecordModel: recordModel = {
     async getRecord() {
         await axios.get('http://120.77.35.114:3000/vuerecord').then((response) => {
             this.RecordList = response.data.vuerecord
-            console.log(this.RecordList, 'axios')
         })
         // this.RecordList = JSON.parse(window.localStorage.getItem('record') || '[]')
-        this.saveRecord()
     },
-    saveRecord() {
-        window.localStorage.setItem('record', JSON.stringify(this.RecordList))
+    saveRecord(Record: RecordItem) {
+        axios.post('http://120.77.35.114:3000/vuerecord', { ...Record })
+        // window.localStorage.setItem('record', JSON.stringify(this.RecordList))
     },
     addRecord(Record: RecordItem) {
-        console.log(parseInt(time.Day), parseInt(time.Month))
         if (parseInt(time.Day) > 10 && parseInt(time.Month) > 10) {
             Record.date = time.FullTime
         } else if (parseInt(time.Day) > 10 && parseInt(time.Month) < 10) {
-            Record.date = time.FullTimeMonth
+            Record.date = time.FullTime
         } else if (parseInt(time.Day) < 10 && parseInt(time.Month) < 10) {
             Record.date = time.FullDate
         } else {
             Record.date = time.FullTimeDay
         }
+
         Record.day = time.Day
         Record.month = time.Month
         this.RecordList.push(Record)
-        this.saveRecord()
+        this.saveRecord(Record)
     }
 }
-RecordModel.getRecord()
-console.log('--------')
 async function GetRecordModel() {
     await RecordModel.getRecord()
-    console.log(RecordModel.RecordList, 'async')
     return RecordModel
 }
 
-export { RecordModel, GetRecordModel, recordModel }
+export { RecordModel, GetRecordModel }

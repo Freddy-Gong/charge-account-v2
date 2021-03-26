@@ -70,7 +70,6 @@ export default class ChartHeader extends Vue {
       if (currentDay === 0) {
         this.$emit("update:time", currentMonth - 1 + "-31");
       } else if (currentDay < 10) {
-        console.log(currentMonth + "-0" + currentDay);
         this.$emit("update:time", currentMonth + "-0" + currentDay);
       } else {
         this.$emit("update:time", currentMonth + "-" + currentDay);

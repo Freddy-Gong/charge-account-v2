@@ -31,7 +31,7 @@ import { Component, Vue } from "vue-property-decorator";
 import Icon from "@/components/Icon.vue";
 import Time from "@/lib/Time.ts";
 import Nav from "@/components/Nav.vue";
-import { RecordModel } from "@/model/RecordModel.ts";
+import { RecordModel, GetRecordModel } from "@/model/RecordModel.ts";
 import ShowRecord from "@/views/Money/ShowRecord.vue";
 const width = document.body.clientWidth;
 if (width > 500) {
@@ -45,6 +45,13 @@ export default class Money extends Vue {
   Spending = RecordModel.CurrentMonthSpending();
   Income = RecordModel.CurrentMonthIncome();
   Residue = RecordModel.CurrentMonthResidue();
+  mounted() {
+    GetRecordModel().then((result: any) => {
+      this.Spending = result.CurrentMonthSpending();
+      this.Income = result.CurrentMonthIncome();
+      this.Residue = result.CurrentMonthResidue();
+    });
+  }
 }
 </script>
 <style lang="scss" scoped>

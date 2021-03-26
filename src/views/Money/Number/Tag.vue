@@ -63,7 +63,6 @@ export default class Tag extends Vue {
     return this.Tags.filter((tag) => tag.category === this.type);
   }
   deleteTag(id: number) {
-    console.log(1);
     TagModul.deleteTag(id);
     this.Tags = TagModul.TagList;
   }
